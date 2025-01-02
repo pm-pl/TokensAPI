@@ -27,10 +27,6 @@ class PayTokens extends Command implements PluginOwned {
         $this->plugin = Tokems::getInstance();
     }
 
-    public function getOwningPlugin(): Plugin {
-        return $this->plugin;
-    }
-
     public function execute(CommandSender $sender, string $commandLabel, array $args) : bool{
         if (!$sender instanceof Player) {
             $sender->sendMessage("This command can only be used in-game!");
@@ -72,5 +68,9 @@ class PayTokens extends Command implements PluginOwned {
         $targetPlayer->sendMessage("You have received §e{$amount} tokens§f from §e" . $sender->getName() . "§f!");
 
         return true;
+    }
+
+    public function getOwningPlugin(): Plugin {
+        return $this->plugin;
     }
 }
