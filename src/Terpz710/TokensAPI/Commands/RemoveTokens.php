@@ -55,7 +55,7 @@ class RemoveTokens extends Command implements PluginOwned {
         }
 
         $tokenAPI = $this->plugin->getTokenAPI();
-        $targetTokens = $tokenAPI->getPlayerToken($targetPlayer);
+        $targetTokens = $tokenAPI->getTokenBalance($targetPlayer);
         if ($targetTokens < $amount) {
             $sender->sendMessage("§e" . $targetPlayer->getName() . " §fdoesn't have enough §etokens§f!");
             return false;
