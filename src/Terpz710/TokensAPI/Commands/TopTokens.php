@@ -6,6 +6,7 @@ namespace Terpz710\TokensAPI\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+
 use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginOwned;
 
@@ -13,20 +14,17 @@ use Terpz710\TokensAPI\Tokens;
 
 class TopTokens extends Command implements PluginOwned{
 
-    /** @var Tokens */
     private $plugin;
 
-    public function __construct(Tokens $plugin) {
-        parent::__construct("toptokens", "Display the top players with the highest token balances", "/toptokens");
+    public function __construct() {
+        parent::__construct("toptokens");
+        $this->setDescription("Display the top players with the highest token balances");
         $this->setPermission("tokensapi.cmd.toptoken");
-        $this->plugin = $plugin;
+        
+        $this->plugin = Tokens::getInstance();
     }
 
-    public function getOwningPlugin(): Plugin {
-        return $this->plugin;
-    }
-
-    public function execute(CommandSender $sender, string $commandLabel, array $args): bool {
+    public function execute(CommandSender $sender, string $commandLabel, array $args) : bool{
         if (!$this->testPermission($sender)) {
             return false;
         }
@@ -44,7 +42,7 @@ class TopTokens extends Command implements PluginOwned{
         return true;
     }
 
-    private function getTopPlayers(Tokens $plugin): array {
+    private function getTopPlayers(Tokens $plugin) : array{
         $playerTokens = [];
         $onlinePlayers = $plugin->getServer()->getOnlinePlayers();
         $tokenAPI = $plugin->getTokenAPI();
@@ -53,5 +51,9 @@ class TopTokens extends Command implements PluginOwned{
         }
         arsort($playerTokens);
         return array_slice($playerTokens, 0, 10, true);
+    }
+
+    public function getOwningPlugin() : Plugin{
+        return $this->plugin;
     }
 }
