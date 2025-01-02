@@ -6,9 +6,6 @@ namespace Terpz710\TokensAPI;
 
 use pocketmine\plugin\PluginBase;
 
-use pocketmine\event\Listener;
-use pocketmine\event\player\PlayerJoinEvent;
-
 use Terpz710\TokensAPI\API\TokenAPI;
 
 use Terpz710\TokensAPI\Commands\PayTokens;
@@ -19,7 +16,7 @@ use Terpz710\TokensAPI\Commands\SeeTokens;
 use Terpz710\TokensAPI\Commands\TopTokens;
 use Terpz710\TokensAPI\Commands\SetTokens;
 
-final class Tokens extends PluginBase implements Listener {
+final class Tokens extends PluginBase {
 
     private $tokenAPI;
 
@@ -28,19 +25,10 @@ final class Tokens extends PluginBase implements Listener {
     }
 
     protected function onEnable() : void{
-        $this->getServer()->getPluginManager()->registerEvents($this, $this);
+        $this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
         $this->saveDefaultConfig();
         $this->registerCommands();
         $this->tokenAPI = new TokenAPI();
-    }
-
-    public function join(PlayerJoinEvent $event) :void{
-        $player = $event->getPlayer();
-        $playerName = $player->getName();
-        if (!$this->tokenAPI->getPlayerToken($player)) {
-            $initialTokenAmount = $this->getConfig()->get("starting_token_amount");
-            $this->tokenAPI->setToken($player, $initialTokenAmount);
-        }
     }
 
     private function registerCommands() : void{
