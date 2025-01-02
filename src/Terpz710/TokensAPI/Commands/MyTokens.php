@@ -38,7 +38,7 @@ class MyTokens extends Command implements PluginOwned {
         }
 
         $tokenAPI = $this->plugin->getTokenAPI();
-        $tokens = $tokenAPI->getPlayerToken($sender);
+        $tokens = $tokenAPI->getTokenBalance($sender);
 
         $sender->sendMessage("Your token balance: §e{$tokens}");
 
