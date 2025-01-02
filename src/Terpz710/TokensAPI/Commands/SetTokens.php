@@ -6,25 +6,25 @@ namespace Terpz710\TokensAPI\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+
 use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginOwned;
+
 use pocketmine\player\Player;
 
 use Terpz710\TokensAPI\Tokens;
 
 class SetTokens extends Command implements PluginOwned {
-
-    /** @var Tokens */
+    
     private $plugin;
 
-    public function __construct(Tokens $plugin) {
-        parent::__construct("settoken", "Set a player's token balance to a specific amount", "/settoken <player> <amount>");
+    public function __construct() {
+        parent::__construct("settoken");
+        $this->setDescription("Set a player's token balance to a specific amount");
+        $this->setUsage("Usage: /settoken <player> <amount>");
         $this->setPermission("tokensapi.cmd.settoken");
-        $this->plugin = $plugin;
-    }
-
-    public function getOwningPlugin(): Plugin {
-        return $this->plugin;
+        
+        $this->plugin = Tokens::getInstance();
     }
 
     public function execute(CommandSender $sender, string $commandLabel, array $args): bool {
@@ -60,5 +60,9 @@ class SetTokens extends Command implements PluginOwned {
         $sender->sendMessage("Set §e" . $targetPlayer->getName() . "'s token §fbalance to §e{$amount}!");
 
         return true;
+    }
+
+    public function getOwningPlugin() : Plugin{
+        return $this->plugin;
     }
 }
