@@ -6,28 +6,28 @@ namespace Terpz710\TokensAPI\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+
 use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginOwned;
+
 use pocketmine\player\Player;
 
 use Terpz710\TokensAPI\Tokens;
 
 class RemoveTokens extends Command implements PluginOwned {
 
-    /** @var Tokens */
     private $plugin;
 
     public function __construct(Tokens $plugin) {
-        parent::__construct("removetoken", "Remove tokens from a player's balance", "/removetokens <player> <amount>");
+        parent::__construct("removetoken");
+        $this->getDescription("Remove tokens from a player's balance");
+        $this->setUsage("Usage: /removetokens <player> <amount>");
         $this->setPermission("tokensapi.cmd.removetoken");
+        
         $this->plugin = $plugin;
     }
 
-    public function getOwningPlugin(): Plugin {
-        return $this->plugin;
-    }
-
-    public function execute(CommandSender $sender, string $commandLabel, array $args): bool {
+    public function execute(CommandSender $sender, string $commandLabel, array $args) : bool{
         if (!$sender instanceof Player) {
             $sender->sendMessage("This command can only be used in-game!");
             return false;
@@ -38,7 +38,7 @@ class RemoveTokens extends Command implements PluginOwned {
         }
 
         if (count($args) !== 2) {
-            $sender->sendMessage("Usage: /removetokens <player> <amount>");
+            $sender->sendMessage($this->getUsage());
             return false;
         }
 
@@ -66,5 +66,9 @@ class RemoveTokens extends Command implements PluginOwned {
         $sender->sendMessage("§e{$amount}§f tokens have been removed from§e " . $targetPlayer->getName() . "'s §fbalance!");
 
         return true;
+    }
+
+    public function getOwningPlugin(): Plugin {
+        return $this->plugin;
     }
 }
