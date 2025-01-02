@@ -31,7 +31,7 @@ class PayTokens extends Command implements PluginOwned {
         return $this->plugin;
     }
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args): bool {
+    public function execute(CommandSender $sender, string $commandLabel, array $args) : bool{
         if (!$sender instanceof Player) {
             $sender->sendMessage("This command can only be used in-game!");
             return false;
