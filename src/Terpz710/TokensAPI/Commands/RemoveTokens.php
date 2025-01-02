@@ -24,7 +24,7 @@ class RemoveTokens extends Command implements PluginOwned {
         $this->setUsage("Usage: /removetokens <player> <amount>");
         $this->setPermission("tokensapi.cmd.removetoken");
         
-        $this->plugin = $plugin;
+        $this->plugin = Tokens::getInstance();
     }
 
     public function execute(CommandSender $sender, string $commandLabel, array $args) : bool{
