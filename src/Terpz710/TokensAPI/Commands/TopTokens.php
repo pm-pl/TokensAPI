@@ -49,7 +49,7 @@ class TopTokens extends Command implements PluginOwned{
         $onlinePlayers = $plugin->getServer()->getOnlinePlayers();
         $tokenAPI = $plugin->getTokenAPI();
         foreach ($onlinePlayers as $player) {
-            $playerTokens[$player->getName()] = $tokenAPI->getPlayerToken($player);
+            $playerTokens[$player->getName()] = $tokenAPI->getTokenBalance($player);
         }
         arsort($playerTokens);
         return array_slice($playerTokens, 0, 10, true);
