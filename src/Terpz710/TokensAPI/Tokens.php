@@ -35,13 +35,13 @@ final class Tokens extends PluginBase {
 
     private function registerCommands() : void{
         $this->getServer()->getCommandMap()->registerAll("TokensAPI", [
-            new PayTokens($this),
-            new RemoveTokens($this),
-	    new AddTokens($this),
-	    new SeeTokens($this),
-	    new MyTokens($this),
-	    new TopTokens($this),
-	    new SetTokens($this)
+            new PayTokens(),
+            new RemoveTokens(),
+	    new AddTokens(),
+	    new SeeTokens(),
+	    new MyTokens(),
+	    new TopTokens(),
+	    new SetTokens()
         ]);
     }
 
