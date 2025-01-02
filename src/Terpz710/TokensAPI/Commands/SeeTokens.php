@@ -44,7 +44,7 @@ class SeeTokens extends Command implements PluginOwned {
         }
 
         $tokenAPI = $this->plugin->getTokenAPI();
-        $tokens = $tokenAPI->getPlayerToken($targetPlayer);
+        $tokens = $tokenAPI->getTokenBalance($targetPlayer);
 
         $sender->sendMessage("§e" . $targetPlayer->getName() . "'s token balance:§e $tokens");
 
