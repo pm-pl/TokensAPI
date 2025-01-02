@@ -30,6 +30,76 @@ Easy to use API for developers ❤️
 starting_token_amount: 100
 ```
 
+# API💜
+
+**How to get the token instance**
+```
+There are 2 ways to retrieve it:
+use Terpz710\TokensAPI\Tokens;
+
+$api = Tokens::getInstance()->getTokenAPI();
+
+or
+
+use Terpz710\TokensAPI\API\TokenAPI;
+
+$api = TokenAPI::getInstance();
+```
+
+**How to retrieve a players token balance**
+```
+$player is an instance of Player::class
+
+$api = TokenAPI::getInstance();
+
+$api->getTokenBalance($player);
+```
+
+**How to add tokens to a player**
+```
+$player is an instance of Player::class
+
+$amount = 100;
+
+$api = TokenAPI::getInstance();
+
+$api->addToken($player, $amount);
+
+or
+
+$api->addToken($player, 100);
+```
+
+**How to remove tokens from a player**
+```
+$player is an instance of Player::class
+
+$amount = 100;
+
+$api = TokenAPI::getInstance();
+
+$api->removeToken($player, $amount);
+
+or
+
+$api->removeToken($player, 100);
+```
+
+**How to set a players token balance**
+```
+$player is an instance of Player::class
+
+$amount = 100;
+
+$api = TokenAPI::getInstance();
+
+$api->setToken($player, $amount);
+
+or
+
+$api->setToken($player, 100);
+```
+
 # Open a pull request
 
 Make sure to make a fork before creating a pull request.
