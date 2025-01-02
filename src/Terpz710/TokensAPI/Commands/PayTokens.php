@@ -55,7 +55,7 @@ class PayTokens extends Command implements PluginOwned {
         }
 
         $tokenAPI = $this->plugin->getTokenAPI();
-        $senderTokens = $tokenAPI->getPlayerToken($sender);
+        $senderTokens = $tokenAPI->getTokenBalance($sender);
         if ($senderTokens < $amount) {
             $sender->sendMessage("You don't have enough §etokens§f to complete this transaction!");
             return false;
