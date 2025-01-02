@@ -6,34 +6,34 @@ namespace Terpz710\TokensAPI\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+
 use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginOwned;
+
 use pocketmine\player\Player;
 
 use Terpz710\TokensAPI\Tokens;
 
 class SeeTokens extends Command implements PluginOwned {
 
-    /** @var Tokens */
     private $plugin;
 
-    public function __construct(Tokens $plugin) {
-        parent::__construct("seetoken", "View the token balance of another player", "/seetokens <player>");
+    public function __construct() {
+        parent::__construct("seetoken");
+        $this->setDescription("View the token balance of another player");
+        $this->setUsage("Usage: /seetokens <player>");
         $this->setPermission("tokensapi.cmd.seetoken");
-        $this->plugin = $plugin;
+        
+        $this->plugin = Tokens::getInstance();
     }
 
-    public function getOwningPlugin(): Plugin {
-        return $this->plugin;
-    }
-
-    public function execute(CommandSender $sender, string $commandLabel, array $args): bool {
+    public function execute(CommandSender $sender, string $commandLabel, array $args) : bool{
         if (!$this->testPermission($sender)) {
             return false;
         }
 
         if (count($args) !== 1) {
-            $sender->sendMessage("Usage: /seetokens <player>");
+            $sender->sendMessage($this->getUsage());
             return false;
         }
 
@@ -49,5 +49,9 @@ class SeeTokens extends Command implements PluginOwned {
         $sender->sendMessage("§e" . $targetPlayer->getName() . "'s token balance:§e $tokens");
 
         return true;
+    }
+
+    public function getOwningPlugin() : Plugin{
+        return $this->plugin;
     }
 }
