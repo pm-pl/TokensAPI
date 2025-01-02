@@ -6,28 +6,27 @@ namespace Terpz710\TokensAPI\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+
 use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginOwned;
+
 use pocketmine\player\Player;
 
 use Terpz710\TokensAPI\Tokens;
 
 class MyTokens extends Command implements PluginOwned {
-
-    /** @var Tokens */
+    
     private $plugin;
 
-    public function __construct(Tokens $plugin) {
-        parent::__construct("mytoken", "View your current token balance", "/mytokens");
+    public function __construct() {
+        parent::__construct("mytoken");
+        $this->setDescription("View your current token balance");
         $this->setPermission("tokensapi.cmd.mytoken");
-        $this->plugin = $plugin;
+        
+        $this->plugin = Tokens::getInstance();
     }
 
-    public function getOwningPlugin(): Plugin {
-        return $this->plugin;
-    }
-
-    public function execute(CommandSender $sender, string $commandLabel, array $args): bool {
+    public function execute(CommandSender $sender, string $commandLabel, array $args) : bool{
         if (!$sender instanceof Player) {
             $sender->sendMessage("This command can only be used in-game!");
             return false;
@@ -43,5 +42,9 @@ class MyTokens extends Command implements PluginOwned {
         $sender->sendMessage("Your token balance: §e{$tokens}");
 
         return true;
+    }
+
+    public function getOwningPlugin(): Plugin {
+        return $this->plugin;
     }
 }
