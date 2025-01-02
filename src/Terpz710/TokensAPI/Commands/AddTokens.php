@@ -6,28 +6,28 @@ namespace Terpz710\TokensAPI\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+
 use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginOwned;
+
 use pocketmine\player\Player;
 
 use Terpz710\TokensAPI\Tokens;
 
 class AddTokens extends Command implements PluginOwned {
 
-    /** @var Tokens */
     private $plugin;
 
-    public function __construct(Tokens $plugin) {
-        parent::__construct("addtoken", "Add tokens to a player's balance", "/addtoken <player> <amount>");
+    public function __construct() {
+        parent::__construct("addtoken");
+        $this->setDescription("Add tokens to a player's balance");
+        $this->setUsage("Usage: /addtoken <player> <amount>");
         $this->setPermission("tokensapi.cmd.addtoken");
-        $this->plugin = $plugin;
+        
+        $this->plugin = Tokens::getInstance();
     }
-
-    public function getOwningPlugin(): Plugin {
-        return $this->plugin;
-    }
-
-    public function execute(CommandSender $sender, string $commandLabel, array $args): bool {
+    
+    public function execute(CommandSender $sender, string $commandLabel, array $args) : bool{
         if (!$sender instanceof Player) {
             $sender->sendMessage("This command can only be used in-game!");
             return false;
@@ -38,7 +38,7 @@ class AddTokens extends Command implements PluginOwned {
         }
 
         if (count($args) !== 2) {
-            $sender->sendMessage("Usage: /addtoken <player> <amount>");
+            $sender->sendMessage($this->getUsage());
             return false;
         }
 
@@ -60,5 +60,9 @@ class AddTokens extends Command implements PluginOwned {
         $sender->sendMessage("§e{$amount} tokens§f have been added to §e" . $targetPlayer->getName() . "'s §fbalance!");
 
         return true;
+    }
+
+    public function getOwningPlugin() : Plugin{
+        return $this->plugin;
     }
 }
