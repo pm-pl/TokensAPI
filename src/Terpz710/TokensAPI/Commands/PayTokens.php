@@ -24,7 +24,7 @@ class PayTokens extends Command implements PluginOwned {
         $this->setDescription("Pay tokens to another player");
         $this->setUsage("Usage: /paytoken <player> <amount>");
         
-        $this->plugin = Tokems::getInstance();
+        $this->plugin = Tokens::getInstance();
     }
 
     public function execute(CommandSender $sender, string $commandLabel, array $args) : bool{
