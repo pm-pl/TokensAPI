@@ -26,7 +26,7 @@ class Tokens extends PluginBase implements Listener {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $this->saveDefaultConfig();
         $this->registerCommands();
-        $this->tokenAPI = new TokenAPI($this);
+        $this->tokenAPI = new TokenAPI();
     }
 
     public function onPlayerJoin(PlayerJoinEvent $event) {
