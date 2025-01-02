@@ -18,6 +18,8 @@ use Terpz710\TokensAPI\Commands\SetTokens;
 
 final class Tokens extends PluginBase {
 
+    protected static $instance;
+	
     private $tokenAPI;
 
     protected function onLoad() : void{
