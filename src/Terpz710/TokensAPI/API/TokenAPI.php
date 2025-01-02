@@ -23,14 +23,14 @@ final class TokenAPI {
 
     public function addToken(Player $player, int $amount) : void{
         $playerName = $player->getName();
-        $currentTokens = $this->getPlayerToken($player);
+        $currentTokens = $this->getTokenBalance($player);
         $newTokens = $currentTokens + $amount;
         $this->setPlayerToken($playerName, $newTokens);
     }
 
     public function removeToken(Player $player, int $amount) : bool{
         $playerName = $player->getName();
-        $currentTokens = $this->getPlayerToken($player);
+        $currentTokens = $this->getTokenBalance($player);
         if ($currentTokens >= $amount) {
             $newTokens = $currentTokens - $amount;
             $this->setPlayerToken($playerName, $newTokens);
