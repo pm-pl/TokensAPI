@@ -44,7 +44,7 @@ class MyTokens extends Command implements PluginOwned {
         return true;
     }
 
-    public function getOwningPlugin(): Plugin {
+    public function getOwningPlugin() : Plugin{
         return $this->plugin;
     }
 }
