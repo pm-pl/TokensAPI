@@ -18,7 +18,7 @@ class RemoveTokens extends Command implements PluginOwned {
 
     private $plugin;
 
-    public function __construct(Tokens $plugin) {
+    public function __construct() {
         parent::__construct("removetoken");
         $this->getDescription("Remove tokens from a player's balance");
         $this->setUsage("Usage: /removetokens <player> <amount>");
