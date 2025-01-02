@@ -6,17 +6,20 @@ namespace Terpz710\TokensAPI\API;
 
 use pocketmine\player\Player;
 
+use pocketmine\utils\SingletonTrait;
+
 use Terpz710\TokensAPI\Tokens;
 
 class TokenAPI {
+    use SingletonTrait;
 
     /** @var Tokens */
     private $plugin;
     
     private $playerTokens = [];
 
-    public function __construct(Tokens $plugin) {
-        $this->plugin = $plugin;
+    public function __construct() {
+        $this->plugin = Tokens::getInstance();
         $this->loadPlayerTokens();
     }
 
