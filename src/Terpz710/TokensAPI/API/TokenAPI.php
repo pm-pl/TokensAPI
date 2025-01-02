@@ -28,7 +28,7 @@ final class TokenAPI {
         $this->setPlayerToken($playerName, $newTokens);
     }
 
-    public function removeToken(Player $player, int $amount) : void{
+    public function removeToken(Player $player, int $amount) : bool{
         $playerName = $player->getName();
         $currentTokens = $this->getPlayerToken($player);
         if ($currentTokens >= $amount) {
