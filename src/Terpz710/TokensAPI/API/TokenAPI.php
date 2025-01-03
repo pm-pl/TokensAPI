@@ -14,60 +14,66 @@ final class TokenAPI {
     use SingletonTrait;
 
     private $plugin;
-    private $playerTokens = [];
+    
+    private string $dataFile;
+    
+    private array $data = [];
 
     public function __construct() {
         $this->plugin = Tokens::getInstance();
-        $this->loadPlayerTokens();
-    }
+        $this->dataFile = $this->plugin->getDataFolder() . "tokens.json";
 
-    public function addToken(Player $player, int $amount) : void{
-        $playerName = $player->getName();
-        $currentTokens = $this->getTokenBalance($player);
-        $newTokens = $currentTokens + $amount;
-        $this->setPlayerToken($playerName, $newTokens);
-    }
-
-    public function removeToken(Player $player, int $amount) : bool{
-        $playerName = $player->getName();
-        $currentTokens = $this->getTokenBalance($player);
-        if ($currentTokens >= $amount) {
-            $newTokens = $currentTokens - $amount;
-            $this->setPlayerToken($playerName, $newTokens);
-            return true;
-        }
-        return false;
-    }
-
-    public function setToken(Player $player, int $amount) : void{
-        $playerName = $player->getName();
-        $this->setPlayerToken($playerName, $amount);
-    }
-
-    public function getTokenBalance(Player $player) : int{
-        $playerName = $player->getName();
-        if (isset($this->playerTokens[$playerName])) {
-            return (int)$this->playerTokens[$playerName];
-        }
-        return 0;
-    }
-
-    private function loadPlayerTokens() : void{
-        $dataFolder = $this->plugin->getDataFolder();
-        $playerTokensFile = $dataFolder . "player_tokens.json";
-        if (file_exists($playerTokensFile)) {
-            $this->playerTokens = json_decode(file_get_contents($playerTokensFile), true);
+        if (file_exists($this->dataFile)) {
+            $this->data = json_decode(file_get_contents($this->dataFile), true);
         }
     }
 
-    private function savePlayerTokens() : void{
-        $dataFolder = $this->plugin->getDataFolder();
-        $playerTokensFile = $dataFolder . "player_tokens.json";
-        file_put_contents($playerTokensFile, json_encode($this->playerTokens, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    public function createBalance(Player $player) : void{
+        $uuid = $player->getUniqueId()->toString();
+        $name = $player->getName();
+
+        if (!isset($this->data[$uuid])) {
+            $this->data[$uuid] = [
+                "name" => $name,
+                "balance" => $this->plugin->getConfig()->get("starting_token_amount", 100)
+            ];
+        } else {
+            $this->data[$uuid]["name"] = $name;
+        }
+
+        $this->save();
     }
 
-    private function setPlayerToken(string $playerName, int $amount) : void{
-        $this->playerTokens[$playerName] = $amount;
-        $this->savePlayerTokens();
+    public function getTokenBalance(Player|string $identifier) : int{
+        $uuid = $identifier instanceof Player ? $identifier->getUniqueId()->toString() : $identifier;
+        return $this->data[$uuid]["balance"] ?? 0;
+    }
+
+    public function addToken(Player|string $identifier, int $amount) : void{
+        $uuid = $identifier instanceof Player ? $identifier->getUniqueId()->toString() : $identifier;
+        if (isset($this->data[$uuid])) {
+            $this->data[$uuid]["balance"] += $amount;
+            $this->save();
+        }
+    }
+
+    public function removeToken(Player|string $identifier, int $amount) : void{
+        $uuid = $identifier instanceof Player ? $identifier->getUniqueId()->toString() : $identifier;
+        if (isset($this->data[$uuid])) {
+            $this->data[$uuid]["balance"] = max(0, $this->data[$uuid]["balance"] - $amount);
+            $this->save();
+        }
+    }
+
+    public function setToken(Player|string $identifier, int $amount) : void{
+        $uuid = $identifier instanceof Player ? $identifier->getUniqueId()->toString() : $identifier;
+        if (isset($this->data[$uuid])) {
+            $this->data[$uuid]["balance"] = $amount;
+            $this->save();
+        }
+    }
+
+    private function save() : void{
+        file_put_contents($this->dataFile, json_encode($this->data, JSON_PRETTY_PRINT));
     }
 }
