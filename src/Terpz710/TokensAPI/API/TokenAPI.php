@@ -35,7 +35,7 @@ final class TokenAPI {
         if (!isset($this->data[$uuid])) {
             $this->data[$uuid] = [
                 "name" => $name,
-                "balance" => $this->plugin->getConfig()->get("starting_token_amount", 100)
+                "balance" => $this->plugin->getConfig()->get("starting_token_amount")
             ];
         } else {
             $this->data[$uuid]["name"] = $name;
